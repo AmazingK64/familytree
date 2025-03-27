@@ -7,6 +7,7 @@ export interface Person {
     spouse?: string;
     children?: Person[];
     fatherId?: string;
+    motherId?: string;
 }
 
 export interface Generation {
@@ -16,4 +17,4 @@ export interface Generation {
 
 export interface FamilyData {
     generations: Generation[];
-} 
+}
