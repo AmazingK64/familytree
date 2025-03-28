@@ -14,13 +14,13 @@ const geistMono = Geist_Mono({
 });
 
 // 从环境变量中获取姓氏
-const familyName = process.env.NEXT_PUBLIC_FAMILY_NAME || '姓氏';
+const familyName = process.env.NEXT_PUBLIC_FAMILY_NAME || '陈';
 // 从环境变量中获取谷歌统计ID
 const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export const metadata: Metadata = {
-  title: `${familyName}氏族谱`,
-  description: `${familyName}氏家族族谱记录`,
+  title: `陈氏族谱`,
+  description: `陈氏家族族谱记录`,
   robots: {
     index: false,
     follow: false,
@@ -48,7 +48,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        
+
         {/* Google Analytics - 仅在ID存在时加载 */}
         {googleAnalyticsId && (
           <>

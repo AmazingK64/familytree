@@ -21,11 +21,11 @@ const createPersonMap = (data: FamilyData) => {
     return map;
 };
 
-// 创建一个映射，用于查找一个人的所有儿子
+// 创建一个映射，用于查找一个人的所有子女
 const createSonsMap = (data: FamilyData) => {
     const map = new Map<string, Person[]>();
 
-    // 初始化每个人的儿子数组
+    // 初始化每个人的子女数组
     data.generations.forEach(generation => {
         generation.people.forEach(person => {
             if (person.id) {
@@ -34,14 +34,20 @@ const createSonsMap = (data: FamilyData) => {
         });
     });
 
-    // 根据 fatherId 填充儿子数组（包含所有儿子）
+    // 根据 fatherId、motherId 填充子女数组（包含所有子女）
     data.generations.forEach(generation => {
         generation.people.forEach(person => {
-            // 任何有fatherId的人都被认为是其父亲的儿子
+            // 任何有fatherId的人都被认为是其父亲的子女
             if (person.fatherId && map.has(person.fatherId)) {
                 const sons = map.get(person.fatherId) || [];
                 sons.push(person);
                 map.set(person.fatherId, sons);
+            }
+
+            if (person.motherId && map.has(person.motherId)) {
+                const sons =  map.get(person.motherId)  || [];
+                sons.push(person);
+                map.set(person.motherId, sons);
             }
         });
     });

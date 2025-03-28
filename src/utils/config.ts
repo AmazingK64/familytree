@@ -35,10 +35,10 @@ async function loadConfigOnServer<T>(filename: string, defaultConfig: T): Promis
     // 动态导入fs和path模块(仅在服务器端)
     const fs = await import('fs');
     const path = await import('path');
-    
+
     const configDir = path.default.join(process.cwd(), 'config');
     const filePath = path.default.join(configDir, filename);
-    
+
     if (fs.default.existsSync(filePath)) {
       const fileContent = fs.default.readFileSync(filePath, 'utf8');
       return JSON.parse(fileContent) as T;
@@ -46,7 +46,7 @@ async function loadConfigOnServer<T>(filename: string, defaultConfig: T): Promis
   } catch (error) {
     console.warn(`Error loading config file ${filename}:`, error);
   }
-  
+
   return defaultConfig;
 }
 
@@ -56,14 +56,14 @@ function getAuthConfigOnServerFromEnv(): AuthConfig {
     requireAuth: process.env.NEXT_PUBLIC_REQUIRE_AUTH === 'true',
     authMode: (process.env.AUTH_MODE as 'all' | 'specific') || 'specific',
     specificName: process.env.SPECIFIC_NAME || '',
-    familyName: process.env.NEXT_PUBLIC_FAMILY_NAME || '姓氏'
+    familyName: process.env.NEXT_PUBLIC_FAMILY_NAME || '陈'
   };
 }
 
 // 从环境变量读取客户端公开配置
 function getPublicConfigFromEnv(): PublicConfig {
   return {
-    familyName: process.env.NEXT_PUBLIC_FAMILY_NAME || '姓氏',
+    familyName: process.env.NEXT_PUBLIC_FAMILY_NAME || '陈',
     isAuthRequired: process.env.NEXT_PUBLIC_REQUIRE_AUTH === 'true'
   };
 }
@@ -71,7 +71,7 @@ function getPublicConfigFromEnv(): PublicConfig {
 // 导出配置访问函数 - 仅用于服务器端组件
 export async function getAuthConfigOnServer(): Promise<AuthConfig> {
   if (authConfigCache) return authConfigCache;
-  
+
   // 直接从环境变量读取配置
   const config = getAuthConfigOnServerFromEnv();
   authConfigCache = config;
@@ -86,7 +86,7 @@ export function getFamilyFullName(): string {
 
 export async function getFamilyDataOnServer(): Promise<FamilyData> {
   if (familyDataCache) return familyDataCache;
-  
+
   const data = await loadConfigOnServer<FamilyData>('family-data.json', defaultFamilyData);
   familyDataCache = data;
   return data;
@@ -100,4 +100,4 @@ export function getPublicConfig(): PublicConfig {
 // 对于familyData，我们需要通过API获取，因为这个数据量可能很大
 export function getFamilyData(): FamilyData {
   return defaultFamilyData; // 这只是一个默认值，实际数据将通过API加载
-} 
+}

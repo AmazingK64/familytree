@@ -6,8 +6,7 @@
         {
           "id": "du-dou",
           "name": "杜兜",
-          "birthYear": 1932,
-          "info": ""
+          "birthYear": 1932
         },
         {
           "id": "chen-zhang-wen",
@@ -23,42 +22,50 @@
           "id": "chen-kai-geng",
           "name": "陈开庚",
           "info": "",
-          "fatherId": "chen-zhang-wen"
+          "fatherId": "chen-zhang-wen",
+          "motherId": "du-dou"
         },
         {
           "id": "erbo",
           "name": "二伯",
           "info": "",
-          "fatherId": "chen-zhang-wen"
+          "fatherId": "chen-zhang-wen",
+          "motherId": "du-dou"
         },
         {
           "id": "sanbo",
           "name": "三伯",
           "info": "",
-          "fatherId": "chen-zhang-wen"
+          "fatherId": "chen-zhang-wen",
+          "motherId": "du-dou"
         },
         {
           "id": "chen-kai-yang",
           "name": "陈开仰",
           "birthYear": 1970,
-          "info": "人民公安警察，生一子陈世坤，妻张小华",
-          "fatherId": "chen-zhang-wen"
+          "info": "人民公安警察，妻张小华",
+          "fatherId": "chen-zhang-wen",
+          "motherId": "du-dou"
         },
         {
           "id": "dagu",
           "name": "大姑",
-          "fatherId": "chen-zhang-wen"
+          "fatherId": "chen-zhang-wen",
+          "motherId": "du-dou"
         },
         {
           "id": "erdagu",
           "name": "二大姑",
-          "fatherId": "chen-zhang-wen"
+          "fatherId": "chen-zhang-wen",
+          "motherId": "du-dou"
         },
         {
           "id": "sandagu",
           "name": "三大姑",
-          "fatherId": "chen-zhang-wen"
-        },{
+          "fatherId": "chen-zhang-wen",
+          "motherId": "du-dou"
+        },
+        {
           "id": "zhang-xiao-hua",
           "name": "张小华",
           "birthYear": 1978,
@@ -140,16 +147,24 @@
           "name": "陈泽毅",
           "info": "",
           "fatherId": "chen-shi-jie"
-        },{
+        },
+        {
           "id": "chen-yu-tong",
           "name": "陈雨彤",
           "info": "",
           "fatherId": "chen-shi-jie"
-        },{
+        },
+        {
           "id": "chen-ze-guan",
           "name": "陈泽冠",
           "info": "",
           "fatherId": "chen-min-an"
+        },
+        {
+          "id": "chen-ze-rui",
+          "name": "陈泽睿",
+          "info": "",
+          "fatherId": "chen-tai-ping"
         }
       ]
     }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import FamilyTree from './components/FamilyTree';
 import TreeView from './components/TreeView';
+import MapView from './components/MapView';
 import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
 import { useFamilyData } from '../data/familyDataWithIds';
@@ -11,12 +12,12 @@ import { getPublicConfig, getFamilyFullName } from '@/utils/config';
 import { FamilyData } from '@/types/family';
 
 export default function Home() {
-  const [viewMode, setViewMode] = useState<'list' | 'tree'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'tree' | 'map'>('list');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState('');
   const { data: familyData, loading: dataLoading, error: dataError } = useFamilyData();
-  
+
   // 从配置中获取是否需要登录的设置和姓氏
   const publicConfig = getPublicConfig();
   const requireAuth = publicConfig.isAuthRequired;
@@ -34,21 +35,21 @@ export default function Home() {
 
   // 创建树状结构数据
   const [treeData, setTreeData] = useState(emptyTreeData);
-  
+
   // 当家族数据加载完成后，重新构建树状结构
   useEffect(() => {
     if (!dataLoading && !dataError) {
       try {
         // 创建一个映射，用于快速查找人物
         const personMap = new Map();
-        
+
         // 首先将所有人物添加到映射中
         familyData.generations.forEach(generation => {
           generation.people.forEach(person => {
             personMap.set(person.id, { ...person, children: [] });
           });
         });
-        
+
         // 根据 fatherId 建立父子关系
         familyData.generations.forEach(generation => {
           generation.people.forEach(person => {
@@ -60,10 +61,10 @@ export default function Home() {
             }
           });
         });
-        
+
         // 找到第一代人物（没有 fatherId 的人）
         const rootPeople = familyData.generations[0].people.map(person => personMap.get(person.id));
-        
+
         // 创建树状结构的个人数据
         setTreeData({
           generations: [
@@ -81,11 +82,11 @@ export default function Home() {
 
   useEffect(() => {
     // 始终假设需要登录验证 - 真实的验证会在服务器端处理
-    
+
     // 检查是否已经验证过
     const token = localStorage.getItem('auth_token');
     const authTime = localStorage.getItem('auth_time');
-    
+
     if (token && authTime) {
       try {
         // 使用Buffer解码token
@@ -93,7 +94,7 @@ export default function Home() {
         const parsedToken = JSON.parse(tokenData);
         const expirationTime = parsedToken.exp;
         const currentTime = Date.now();
-        
+
         // 检查token是否过期（24小时）
         if (currentTime < expirationTime) {
           setIsAuthenticated(true);
@@ -110,14 +111,14 @@ export default function Home() {
         localStorage.removeItem('auth_time');
       }
     }
-    
+
     setLoading(false);
   }, []);
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
   };
-  
+
   const handleLogout = () => {
     // 清除验证信息
     localStorage.removeItem('auth_token');
@@ -156,7 +157,7 @@ export default function Home() {
               </button>
             </div>
           )}
-          
+
           <h1 className="text-3xl font-bold text-gray-900 text-center">
             {familyFullName}族谱
           </h1>
@@ -171,49 +172,61 @@ export default function Home() {
           <div className="mt-6 flex justify-center">
             <div className="inline-flex rounded-md shadow-sm">
               <button
-                type="button"
-                className={`px-4 py-2 text-sm font-medium rounded-l-md flex items-center ${
-                  viewMode === 'list'
-                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
-                }`}
-                onClick={() => setViewMode('list')}
+                  type="button"
+                  className={`px-4 py-2 text-sm font-medium rounded-l-md flex items-center ${
+                      viewMode === 'list'
+                          ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                          : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                  }`}
+                  onClick={() => setViewMode('list')}
               >
-                <QueueListIcon className="h-4 w-4 mr-2" />
+                <QueueListIcon className="h-4 w-4 mr-2"/>
                 列表视图
               </button>
               <button
-                type="button"
-                className={`px-4 py-2 text-sm font-medium rounded-r-md flex items-center ${
-                  viewMode === 'tree'
-                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
-                }`}
-                onClick={() => setViewMode('tree')}
+                  type="button"
+                  className={`px-4 py-2 text-sm font-medium flex items-center ${
+                      viewMode === 'tree'
+                          ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                          : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                  }`}
+                  onClick={() => setViewMode('tree')}
               >
-                <Squares2X2Icon className="h-4 w-4 mr-2" />
+                <Squares2X2Icon className="h-4 w-4 mr-2"/>
                 树状视图
               </button>
+              {/*<button*/}
+              {/*    type="button"*/}
+              {/*    className={`px-4 py-2 text-sm font-medium rounded-r-md flex items-center ${*/}
+              {/*        viewMode === 'map'*/}
+              {/*            ? 'bg-blue-50 text-blue-700 border border-blue-200'*/}
+              {/*            : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'*/}
+              {/*    }`}*/}
+              {/*    onClick={() => setViewMode('map')}*/}
+              {/*>*/}
+              {/*  <Squares2X2Icon className="h-4 w-4 mr-2"/>*/}
+              {/*  思维导图*/}
+              {/*</button>*/}
             </div>
           </div>
         </div>
       </header>
-      
+
       <div className="flex-grow">
         {dataError && (
-          <div className="text-center text-red-500 mb-4">
-            {dataError} - 使用默认数据
-          </div>
+            <div className="text-center text-red-500 mb-4">
+              {dataError} - 使用默认数据
+            </div>
         )}
-        
+
         {viewMode === 'list' ? (
-          <FamilyTree familyData={familyData} />
-        ) : (
-          <TreeView data={treeData} />
-        )}
+            <FamilyTree familyData={familyData}/>
+        ) :
+            viewMode === 'tree' ? <TreeView data={treeData}/> : <MapView  data={treeData}/>
+        }
       </div>
-      
-      <Footer />
+
+      <Footer/>
     </main>
   );
 }
